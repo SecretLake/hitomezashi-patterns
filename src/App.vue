@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer :clipped="true" app color="#272522">
       <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
+        <v-row align="center" justify="center" class="navi-row">
           <v-btn
               elevation="3"
               large
@@ -12,7 +12,25 @@
           >Draw Pattern
           </v-btn>
         </v-row>
-        <v-row align="center" justify="center">
+        <v-row align="center" justify="center" class="navi-row">
+          <v-col cols="12" md="12" lg="12">
+            <v-text-field v-model="lineColor" hide-details class="ma-0 pa-0" solo>
+              <template v-slot:append>
+                <v-menu v-model="menu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                  <template v-slot:activator="{ on }">
+                    <div :style="swatchStyle" v-on="on"/>
+                  </template>
+                  <v-card>
+                    <v-card-text class="pa-0">
+                      <v-color-picker v-model="lineColor" flat/>
+                    </v-card-text>
+                  </v-card>
+                </v-menu>
+              </template>
+            </v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="navi-row">
           <v-col cols="12" md="12" lg="12">
             <v-slider
                 hint="Adjust line width"
@@ -46,6 +64,7 @@
             <HitomezashiPatterns
                 :triggerDrawPattern="triggerDrawing"
                 :lineWidth="lineWidth"
+                :lineColor="lineColor"
             />
           </v-col>
         </v-row>
@@ -62,11 +81,26 @@ export default {
   components: {
     HitomezashiPatterns
   },
+  computed: {
+    swatchStyle() {
+      const { lineColor, menu } = this
+      return {
+        backgroundColor: lineColor,
+        cursor: 'pointer',
+        height: '30px',
+        width: '30px',
+        borderRadius: menu ? '50%' : '4px',
+        transition: 'border-radius 200ms ease-in-out'
+      }
+    }
+  },
   data() {
     return {
       triggerDrawing: 0,
       lineWidth: 1,
       accentColor: "#7FA650",
+      lineColor: '#7FA650FF',
+      menu: false,
     }
   },
 }

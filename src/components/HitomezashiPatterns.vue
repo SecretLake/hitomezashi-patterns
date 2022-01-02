@@ -17,6 +17,10 @@ export default {
       type: Number,
       required: true,
       default: 1
+    },
+    lineColor: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -42,8 +46,10 @@ export default {
       this.drawPattern()
     },
     lineWidth: function() {
-      console.log(this.lineWidth)
       this.ctx.lineWidth = this.lineWidth;
+    },
+    lineColor: function() {
+      this.ctx.strokeStyle = this.lineColor;
     }
   },
   methods: {
@@ -68,7 +74,7 @@ export default {
 
       this.canvas.height = this.height;
       this.canvas.width = this.width;
-      this.ctx.strokeStyle = this.strokeStyle;
+      this.ctx.strokeStyle = this.lineColor;
     },
     drawLine(startX, startY, endX, endY) {
       this.ctx.beginPath();
