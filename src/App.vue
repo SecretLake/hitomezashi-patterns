@@ -80,10 +80,10 @@
                   :color="accentColor"
               >
                 Click on the the "Generate Pattern" button to draw a pattern.
+                Default pattern is generated on a 30x30 number grid.
               </v-alert>
             </v-col>
             <HitomezashiPatterns
-                :triggerDrawPattern="triggerDrawing"
                 :lineWidth="lineWidth"
                 :lineColor="lineColor"
                 :xAxisHint="xAxisHint"
@@ -124,7 +124,6 @@ export default {
   },
   data() {
     return {
-      triggerDrawing: 0,
       lineWidth: 1,
       xAxisHint: "",
       yAxisHint: "",
@@ -140,8 +139,8 @@ export default {
     }
   },
   methods: {
-    isLetter(character) {
-      return character.length === 1 && character.match(/[a-z]/i);
+    isNumber(character) {
+      return !isNaN(parseInt(character));
     },
     getRandomInt(max) {
       return Math.floor(Math.random() * max);
@@ -156,7 +155,11 @@ export default {
       let hintWithoutSpaces = hint.replace(/\s/g, '');
 
       for (let i = 0; i < hintWithoutSpaces.length; i++) {
-        if (this.vowels.includes(hint[i].toLowerCase())) {
+        let character = hintWithoutSpaces[i];
+
+        if (this.isNumber(character)) {
+          result.push(parseInt(character))
+        } else if (this.vowels.includes(character.toLowerCase())) {
           result.push(0)
         } else {
           result.push(1)
@@ -166,12 +169,17 @@ export default {
       return result;
     },
     onDrawBtnClick() {
-      // Clear for re-draw
+      // Clear numbers for re-draw
       this.verticalNums = []
       this.horizontalNums = []
 
-      this.generateNumbers(this.patternLength, this.horizontalNums)
-      this.generateNumbers(this.patternLength, this.verticalNums)
+      if (this.xAxisHint && this.yAxisHint) {
+          this.horizontalNums = this.generateNumsBasedOnHint(this.xAxisHint);
+          this.verticalNums = this.generateNumsBasedOnHint(this.yAxisHint);
+      } else {
+        this.generateNumbers(this.patternLength, this.verticalNums)
+        this.generateNumbers(this.patternLength, this.horizontalNums)
+      }
     },
   }
 }

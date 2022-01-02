@@ -9,10 +9,6 @@ export default {
     this.setUpCanvas()
   },
   props: {
-    triggerDrawPattern: {
-      type: Number,
-      required: true
-    },
     lineWidth: {
       type: Number,
       required: true,
