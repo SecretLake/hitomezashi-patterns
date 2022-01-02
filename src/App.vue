@@ -54,29 +54,20 @@
         <v-row align="center" justify="center" class="navi-row">
           <v-col cols="12" md="12" lg="12">
             <v-subheader>Color pattern segments</v-subheader>
-            <v-text-field v-model="segmentOneColor" hide-details class="ma-0 pa-0" solo>
+            <v-text-field v-model="regionFillColor" hide-details class="ma-0 pa-0" solo>
               <template v-slot:append>
-                <v-menu v-model="segmentOneMenu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                <v-menu
+                    v-model="regionFillColorMenu"
+                    top
+                    nudge-bottom="105"
+                    nudge-left="16"
+                    :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
-                    <div :style="segmentOneColorStyle" v-on="on"/>
+                    <div :style="regionFillColorStyle" v-on="on"/>
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="segmentOneColor" flat/>
-                    </v-card-text>
-                  </v-card>
-                </v-menu>
-              </template>
-            </v-text-field>
-            <v-text-field v-model="segmentTwoColor" hide-details class="pa-0 background-color-segment" solo>
-              <template v-slot:append>
-                <v-menu v-model="segmentTwoMenu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
-                  <template v-slot:activator="{ on }">
-                    <div :style="segmentTwoColorStyle" v-on="on"/>
-                  </template>
-                  <v-card>
-                    <v-card-text class="pa-0">
-                      <v-color-picker v-model="segmentTwoColor" flat/>
+                      <v-color-picker v-model="regionFillColor" flat/>
                     </v-card-text>
                   </v-card>
                 </v-menu>
@@ -136,6 +127,7 @@
                 :patternLength="patternLength"
                 :verticalNums="verticalNums"
                 :horizontalNums="horizontalNums"
+                :regionFillColor="regionFillColor"
             />
           </v-col>
         </v-row>
@@ -161,31 +153,21 @@ export default {
         cursor: 'pointer',
         height: '30px',
         width: '30px',
+        border: '1px solid #272522',
         borderRadius: lineColorMenu ? '50%' : '4px',
         transition: 'border-radius 200ms ease-in-out'
       }
     },
-    segmentOneColorStyle() {
-      const {segmentOneColor, segmentOneMenu} = this;
+    regionFillColorStyle() {
+      const {regionFillColor, regionFillColorMenu} = this;
 
       return {
-        backgroundColor: segmentOneColor,
+        backgroundColor: regionFillColor,
         cursor: 'pointer',
         height: '30px',
         width: '30px',
-        borderRadius: segmentOneMenu ? '50%' : '4px',
-        transition: 'border-radius 200ms ease-in-out'
-      }
-    },
-    segmentTwoColorStyle() {
-      const {segmentTwoColor, segmentTwoMenu} = this;
-
-      return {
-        backgroundColor: segmentTwoColor,
-        cursor: 'pointer',
-        height: '30px',
-        width: '30px',
-        borderRadius: segmentTwoMenu ? '50%' : '4px',
+        border: '1px solid #272522',
+        borderRadius: regionFillColorMenu ? '50%' : '4px',
         transition: 'border-radius 200ms ease-in-out'
       }
     }
@@ -203,11 +185,10 @@ export default {
       verticalLength: 30,
       accentColor: "#7FA650",
       lineColor: "#7FA650FF",
-      segmentOneColor: "#fff",
-      segmentTwoColor: "#fff",
+      segmentOneColor: "#FFFFFF",
+      regionFillColor: "#FFFFFF",
       lineColorMenu: false,
-      segmentOneMenu: false,
-      segmentTwoMenu: false,
+      regionFillColorMenu: false,
     }
   },
   methods: {
@@ -235,16 +216,12 @@ export default {
       for (let i = 0; i < hintWithoutSpaces.length; i++) {
         let character = hintWithoutSpaces[i];
 
-        switch (character) {
-          case this.isNumber(character):
-            result.push(this.getEvenOddResult(character));
-            break;
-          case this.vowels.includes(character.toLowerCase()):
-            result.push(0);
-            break;
-          default:
-            result.push(1);
-            break;
+        if (this.isNumber(character)) {
+          result.push(this.getEvenOddResult(character));
+        } else if (this.vowels.includes(character.toLowerCase())) {
+          result.push(0);
+        } else {
+          result.push(1);
         }
       }
 
@@ -294,9 +271,5 @@ export default {
 .v-subheader {
   color: white !important;
   padding: 0px !important;
-}
-
-.background-color-segment {
-  margin-top: 15px !important;
 }
 </style>
