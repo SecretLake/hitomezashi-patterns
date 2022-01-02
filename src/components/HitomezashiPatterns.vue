@@ -35,7 +35,6 @@ export default {
     return {
       height: 800,
       width: 800,
-      vowels: "aeoui",
       canvas: null,
       ctx: null,
     }
@@ -103,7 +102,7 @@ export default {
           this.drawVerticalStitches(x, y, this.patternLength)
         }
       }
-    }
+    },
   },
 }
 </script>

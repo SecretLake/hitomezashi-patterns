@@ -98,6 +98,16 @@
             ></v-slider>
           </v-col>
         </v-row>
+        <v-row align="center" justify="center" class="navi-row">
+          <v-btn
+              elevation="3"
+              large
+              :color="accentColor"
+              class="white--text"
+              v-on:click="saveAsPng"
+          >Save as PNG
+          </v-btn>
+        </v-row>
       </v-container>
     </v-navigation-drawer>
     <v-main>
@@ -207,6 +217,12 @@ export default {
     getRandomInt(max) {
       return Math.floor(Math.random() * max);
     },
+    getEvenOddResult(num) {
+      if (num % 2 === 0) {
+        return 1;
+      }
+      return 0;
+    },
     generateNumbers(range, saveNums) {
       for (let i = 0; i < range; i++) {
         saveNums.push(this.getRandomInt(2));
@@ -219,12 +235,16 @@ export default {
       for (let i = 0; i < hintWithoutSpaces.length; i++) {
         let character = hintWithoutSpaces[i];
 
-        if (this.isNumber(character)) {
-          result.push(parseInt(character))
-        } else if (this.vowels.includes(character.toLowerCase())) {
-          result.push(0)
-        } else {
-          result.push(1)
+        switch (character) {
+          case this.isNumber(character):
+            result.push(this.getEvenOddResult(character));
+            break;
+          case this.vowels.includes(character.toLowerCase()):
+            result.push(0);
+            break;
+          default:
+            result.push(1);
+            break;
         }
       }
 
@@ -243,6 +263,21 @@ export default {
         this.generateNumbers(this.patternLength, this.horizontalNums)
       }
     },
+    saveAsPng() {
+      if (!(this.horizontalNums.length && this.verticalNums.length)) {
+        return;
+      }
+
+      let downloadLink = document.createElement('a');
+      downloadLink.setAttribute('download', 'hitomezashi-pattern.png');
+
+      let canvas = document.getElementById('canvas');
+      let dataURL = canvas.toDataURL('image/png');
+      let url = dataURL.replace(/^data:image\/png/, 'data:application/octet-stream');
+
+      downloadLink.setAttribute('href', url);
+      downloadLink.click();
+    }
   }
 }
 </script>
