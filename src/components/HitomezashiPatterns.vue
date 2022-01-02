@@ -7,9 +7,17 @@ export default {
   name: "HitomezashiPatterns",
   mounted() {
     this.setUpCanvas()
-    this.generateNumbers(this.verticalLength, this.verticalNums)
-    this.generateNumbers(this.horizontalLength, this.horizontalNums)
-    this.drawPattern()
+  },
+  props: {
+    triggerDrawPattern: {
+      type: Number,
+      required: true
+    },
+    lineWidth: {
+      type: Number,
+      required: true,
+      default: 1
+    }
   },
   data() {
     return {
@@ -19,7 +27,6 @@ export default {
       painting: false,
       canvas: null,
       ctx: null,
-      lineWidth: 3,
       horizontalLength: 30,
       verticalLength: 30,
       horizontalNums: [],
@@ -27,7 +34,25 @@ export default {
       strokeStyle: "black",
     }
   },
+  watch: {
+    triggerDrawPattern: function() {
+      this.clearCanvasForReDraw()
+      this.generateNumbers(this.verticalLength, this.verticalNums)
+      this.generateNumbers(this.horizontalLength, this.horizontalNums)
+      this.drawPattern()
+    },
+    lineWidth: function() {
+      console.log(this.lineWidth)
+      this.ctx.lineWidth = this.lineWidth;
+    }
+  },
   methods: {
+    clearCanvasForReDraw() {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      this.verticalNums = []
+      this.horizontalNums = []
+    },
     getRandomInt(max) {
       return Math.floor(Math.random() * max);
     },
@@ -39,10 +64,10 @@ export default {
     setUpCanvas() {
       this.canvas = document.getElementById("canvas");
       this.ctx = this.canvas.getContext("2d");
+      this.ctx.lineWidth = this.lineWidth;
 
       this.canvas.height = this.height;
       this.canvas.width = this.width;
-      this.ctx.lineWidth = this.lineWidth;
       this.ctx.strokeStyle = this.strokeStyle;
     },
     drawLine(startX, startY, endX, endY) {
