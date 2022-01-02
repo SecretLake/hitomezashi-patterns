@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       height: 800,
-      width: 600,
+      width: 800,
       patternLength: 30,
       painting: false,
       canvas: null,
@@ -40,8 +40,8 @@ export default {
       this.canvas = document.getElementById("canvas");
       this.ctx = this.canvas.getContext("2d");
 
-      this.canvas.height = window.innerHeight;
-      this.canvas.width = window.innerWidth;
+      this.canvas.height = this.height;
+      this.canvas.width = this.width;
       this.ctx.lineWidth = this.lineWidth;
       this.ctx.strokeStyle = this.strokeStyle;
     },
@@ -76,5 +76,9 @@ export default {
 </script>
 
 <style scoped>
-
+canvas {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
 </style>
