@@ -46,10 +46,13 @@ export default {
       this.drawPattern()
     },
     lineWidth: function () {
+      this.clearCanvasForReDraw()
       this.ctx.lineWidth = this.lineWidth;
+      this.drawPattern()
     },
     lineColor: function () {
       this.ctx.strokeStyle = this.lineColor;
+      this.drawPattern()
     }
   },
   computed: {
