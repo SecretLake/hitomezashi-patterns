@@ -21,51 +21,54 @@ export default {
     lineColor: {
       type: String,
       required: true
+    },
+    patternLength: {
+      type: Number,
+      required: true
+    },
+    verticalNums: {
+      type: Array,
+      required: true
+    },
+    horizontalNums: {
+      type: Array,
+      required: true
     }
   },
   data() {
     return {
       height: 800,
       width: 800,
-      patternLength: 30,
-      painting: false,
+      vowels: "aeoui",
       canvas: null,
       ctx: null,
-      horizontalLength: 30,
-      verticalLength: 30,
-      horizontalNums: [],
-      verticalNums: [],
-      strokeStyle: "black",
     }
   },
   watch: {
-    triggerDrawPattern: function() {
+    numbersProvided: function () {
       this.clearCanvasForReDraw()
-      this.generateNumbers(this.verticalLength, this.verticalNums)
-      this.generateNumbers(this.horizontalLength, this.horizontalNums)
       this.drawPattern()
     },
-    lineWidth: function() {
+    lineWidth: function () {
       this.ctx.lineWidth = this.lineWidth;
     },
-    lineColor: function() {
+    lineColor: function () {
       this.ctx.strokeStyle = this.lineColor;
+    }
+  },
+  computed: {
+    numbersProvided() {
+      const {verticalNums, horizontalNums} = this;
+
+      return {
+        verticalNums,
+        horizontalNums
+      }
     }
   },
   methods: {
     clearCanvasForReDraw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-      this.verticalNums = []
-      this.horizontalNums = []
-    },
-    getRandomInt(max) {
-      return Math.floor(Math.random() * max);
-    },
-    generateNumbers(range, saveNums) {
-      for (let i = 0; i < range; i++) {
-        saveNums.push(this.getRandomInt(2))
-      }
     },
     setUpCanvas() {
       this.canvas = document.getElementById("canvas");
@@ -95,10 +98,10 @@ export default {
       this.drawLine(x, y * len, x, (y + 1) * len);
     },
     drawPattern() {
-      for (let i = 0; i < this.horizontalNums.length; i++) {
-        for (let j = 0; j < this.verticalNums.length / 2; j++) {
-          this.drawHorizontalStitches(i, j, this.patternLength)
-          this.drawVerticalStitches(i, j, this.patternLength)
+      for (let x = 0; x < this.horizontalNums.length; x++) {
+        for (let y = 0; y < this.verticalNums.length / 2; y++) {
+          this.drawHorizontalStitches(x, y, this.patternLength)
+          this.drawVerticalStitches(x, y, this.patternLength)
         }
       }
     }
