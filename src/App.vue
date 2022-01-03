@@ -114,7 +114,9 @@
                   :color="accentColor"
               >
                 Click on the the "Generate Pattern" button to draw a pattern.
-                Default pattern is generated on a 30x30 number grid.
+                Each pattern is generated on a 30x30 number grid.
+                If you want to set your own values for X and Y axis and they are shorter than 30 characters,
+                your hints will be expanded to generate a 30x30 grid.
               </v-alert>
             </v-col>
             <HitomezashiPatterns
@@ -209,12 +211,19 @@ export default {
         saveNums.push(this.getRandomInt(2));
       }
     },
+    inflateHint(hint) {
+      if (hint.length < this.patternLength) {
+        return hint.repeat(5);
+      }
+      return hint;
+    },
     generateNumsBasedOnHint(hint) {
       let result = [];
       let hintWithoutSpaces = hint.replace(/\s/g, '');
+      let inflatedHint = this.inflateHint(hintWithoutSpaces)
 
-      for (let i = 0; i < hintWithoutSpaces.length; i++) {
-        let character = hintWithoutSpaces[i];
+      for (let i = 0; i < inflatedHint.length; i++) {
+        let character = inflatedHint[i];
 
         if (this.isNumber(character)) {
           result.push(this.getEvenOddResult(character));
