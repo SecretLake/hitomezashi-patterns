@@ -4,6 +4,7 @@
 
 <script>
 import {floodFill} from "@/utils/floodFill";
+// import {isSquare} from "@/utils/isSquare";
 
 export default {
   name: "HitomezashiPatterns",
@@ -35,7 +36,7 @@ export default {
     regionFillColor: {
       type: String,
       required: true
-    }
+    },
   },
   data() {
     return {
@@ -43,6 +44,7 @@ export default {
       width: 800,
       canvas: null,
       ctx: null,
+      lines: [],
     };
   },
   watch: {
@@ -58,7 +60,7 @@ export default {
     lineColor: function () {
       this.ctx.strokeStyle = this.lineColor;
       this.drawPattern();
-    }
+    },
   },
   computed: {
     numbersProvided() {
@@ -102,6 +104,8 @@ export default {
       this.drawLine(x, y * len, x, (y + 1) * len);
     },
     drawPattern() {
+      this.lines = [];
+
       for (let x = 0; x < this.horizontalNums.length; x++) {
         for (let y = 0; y < this.verticalNums.length / 2; y++) {
           this.drawHorizontalStitches(x, y, this.patternLength);

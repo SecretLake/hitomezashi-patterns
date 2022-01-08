@@ -21,8 +21,6 @@
                 solo
             ></v-text-field>
           </v-col>
-        </v-row>
-        <v-row align="center" justify="center" class="navi-row">
           <v-col cols="12" md="12" lg="12">
             <v-subheader>Define Y values</v-subheader>
             <v-text-field
@@ -30,6 +28,38 @@
                 v-model="yAxisHint"
                 solo
             ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row align="center" justify="center" class="navi-row">
+          <v-col cols="12" md="12" lg="12" class="small-button-col">
+            <v-btn
+                elevation="4"
+                x-small
+                :color="accentColor"
+                class="white--text"
+                v-on:click="setRandomLineColor"
+            >Random Line Color
+            </v-btn>
+          </v-col>
+          <v-col cols="12" md="12" lg="12" class="small-button-col">
+            <v-btn
+                elevation="4"
+                x-small
+                :color="accentColor"
+                class="white--text"
+                v-on:click="setRandomLineWidth"
+            >Random Line Width
+            </v-btn>
+          </v-col>
+          <v-col cols="12" md="12" lg="12" class="small-button-col">
+            <v-btn
+                elevation="4"
+                x-small
+                :color="accentColor"
+                class="white--text"
+                v-on:click="setRandomFillColor"
+            >Random Fill Color
+            </v-btn>
           </v-col>
         </v-row>
         <v-row align="center" justify="center" class="navi-row">
@@ -43,15 +73,13 @@
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="lineColor" flat/>
+                      <v-color-picker v-model="lineColor" show-swatches swatches-max-height="300px" flat/>
                     </v-card-text>
                   </v-card>
                 </v-menu>
               </template>
             </v-text-field>
           </v-col>
-        </v-row>
-        <v-row align="center" justify="center" class="navi-row">
           <v-col cols="12" md="12" lg="12">
             <v-subheader>Color pattern segments</v-subheader>
             <v-text-field v-model="regionFillColor" hide-details class="ma-0 pa-0" solo>
@@ -67,7 +95,7 @@
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="regionFillColor" flat/>
+                      <v-color-picker v-model="regionFillColor" show-swatches swatches-max-height="300px" flat/>
                     </v-card-text>
                   </v-card>
                 </v-menu>
@@ -86,6 +114,7 @@
                 thumb-label="always"
                 :color="accentColor"
                 v-on:change="lineWidth = $event"
+                :value="lineWidth"
             ></v-slider>
           </v-col>
         </v-row>
@@ -142,7 +171,7 @@
 import HitomezashiPatterns from "@/components/HitomezashiPatterns";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HitomezashiPatterns
   },
@@ -152,27 +181,27 @@ export default {
 
       return {
         backgroundColor: lineColor,
-        cursor: 'pointer',
-        height: '30px',
-        width: '30px',
-        border: '1px solid #272522',
-        borderRadius: lineColorMenu ? '50%' : '4px',
-        transition: 'border-radius 200ms ease-in-out'
-      }
+        cursor: "pointer",
+        height: "30px",
+        width: "30px",
+        border: "1px solid #272522",
+        borderRadius: lineColorMenu ? "50%" : "4px",
+        transition: "border-radius 200ms ease-in-out"
+      };
     },
     regionFillColorStyle() {
       const {regionFillColor, regionFillColorMenu} = this;
 
       return {
         backgroundColor: regionFillColor,
-        cursor: 'pointer',
-        height: '30px',
-        width: '30px',
-        border: '1px solid #272522',
-        borderRadius: regionFillColorMenu ? '50%' : '4px',
-        transition: 'border-radius 200ms ease-in-out'
-      }
-    }
+        cursor: "pointer",
+        height: "30px",
+        width: "30px",
+        border: "1px solid #272522",
+        borderRadius: regionFillColorMenu ? "50%" : "4px",
+        transition: "border-radius 200ms ease-in-out"
+      };
+    },
   },
   data() {
     return {
@@ -191,9 +220,27 @@ export default {
       regionFillColor: "#FFFFFF",
       lineColorMenu: false,
       regionFillColorMenu: false,
-    }
+    };
   },
   methods: {
+    getRandomColor() {
+      let letters = '0123456789ABCDEF';
+      let color = '#';
+
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    },
+    setRandomLineColor() {
+      this.lineColor = this.getRandomColor();
+    },
+    setRandomLineWidth() {
+      this.lineWidth = Math.floor(Math.random() * (21 - 1) + 1);
+    },
+    setRandomFillColor() {
+      this.regionFillColor = this.getRandomColor();
+    },
     isNumber(character) {
       return !isNaN(parseInt(character));
     },
@@ -219,8 +266,8 @@ export default {
     },
     generateNumsBasedOnHint(hint) {
       let result = [];
-      let hintWithoutSpaces = hint.replace(/\s/g, '');
-      let inflatedHint = this.inflateHint(hintWithoutSpaces)
+      let hintWithoutSpaces = hint.replace(/\s/g, "");
+      let inflatedHint = this.inflateHint(hintWithoutSpaces);
 
       for (let i = 0; i < inflatedHint.length; i++) {
         let character = inflatedHint[i];
@@ -238,15 +285,15 @@ export default {
     },
     onDrawBtnClick() {
       // Clear numbers for re-draw
-      this.verticalNums = []
-      this.horizontalNums = []
+      this.verticalNums = [];
+      this.horizontalNums = [];
 
       if (this.xAxisHint && this.yAxisHint) {
         this.horizontalNums = this.generateNumsBasedOnHint(this.xAxisHint);
         this.verticalNums = this.generateNumsBasedOnHint(this.yAxisHint);
       } else {
-        this.generateNumbers(this.patternLength, this.verticalNums)
-        this.generateNumbers(this.patternLength, this.horizontalNums)
+        this.generateNumbers(this.patternLength, this.verticalNums);
+        this.generateNumbers(this.patternLength, this.horizontalNums);
       }
     },
     saveAsPng() {
@@ -254,18 +301,18 @@ export default {
         return;
       }
 
-      let downloadLink = document.createElement('a');
-      downloadLink.setAttribute('download', 'hitomezashi-pattern.png');
+      let downloadLink = document.createElement("a");
+      downloadLink.setAttribute("download", "hitomezashi-pattern.png");
 
-      let canvas = document.getElementById('canvas');
-      let dataURL = canvas.toDataURL('image/png');
-      let url = dataURL.replace(/^data:image\/png/, 'data:application/octet-stream');
+      let canvas = document.getElementById("canvas");
+      let dataURL = canvas.toDataURL("image/png");
+      let url = dataURL.replace(/^data:image\/png/, "data:application/octet-stream");
 
-      downloadLink.setAttribute('href', url);
+      downloadLink.setAttribute("href", url);
       downloadLink.click();
     }
   }
-}
+};
 </script>
 
 <style>
@@ -281,4 +328,14 @@ export default {
   color: white !important;
   padding: 0px !important;
 }
+
+.theme--light.v-label {
+  color: white !important;
+}
+
+.small-button-col {
+  display: flex;
+  justify-content: center;
+}
+
 </style>
