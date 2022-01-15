@@ -4,7 +4,6 @@
 
 <script>
 import {floodFill} from "@/utils/floodFill";
-// import {isSquare} from "@/utils/isSquare";
 
 export default {
   name: "HitomezashiPatterns",
@@ -37,6 +36,10 @@ export default {
       type: String,
       required: true
     },
+    colorRandomSegment: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
@@ -44,7 +47,6 @@ export default {
       width: 800,
       canvas: null,
       ctx: null,
-      lines: [],
     };
   },
   watch: {
@@ -61,6 +63,9 @@ export default {
       this.ctx.strokeStyle = this.lineColor;
       this.drawPattern();
     },
+    colorRandomSegment: function () {
+      this.applyColorToRandomSegment()
+    }
   },
   computed: {
     numbersProvided() {
@@ -104,8 +109,6 @@ export default {
       this.drawLine(x, y * len, x, (y + 1) * len);
     },
     drawPattern() {
-      this.lines = [];
-
       for (let x = 0; x < this.horizontalNums.length; x++) {
         for (let y = 0; y < this.verticalNums.length / 2; y++) {
           this.drawHorizontalStitches(x, y, this.patternLength);
@@ -129,6 +132,16 @@ export default {
     handleMouseDown(e) {
       let x = e.offsetX;
       let y = e.offsetY;
+      let fillColor = this.getFillColor(this.regionFillColor);
+
+      floodFill(this.ctx, x, y, fillColor);
+    },
+    randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    applyColorToRandomSegment() {
+      let x = this.randomInt(0, this.canvas.width);
+      let y = this.randomInt(0, this.canvas.height);
       let fillColor = this.getFillColor(this.regionFillColor);
 
       floodFill(this.ctx, x, y, fillColor);

@@ -61,6 +61,16 @@
             >Random Fill Color
             </v-btn>
           </v-col>
+          <v-col cols="12" md="12" lg="12" class="small-button-col">
+            <v-btn
+                elevation="4"
+                x-small
+                :color="accentColor"
+                class="white--text"
+                v-on:click="colorRandomSegment += 1"
+            >Color Random Segment
+            </v-btn>
+          </v-col>
         </v-row>
         <v-row align="center" justify="center" class="navi-row">
           <v-col cols="12" md="12" lg="12">
@@ -159,6 +169,7 @@
                 :verticalNums="verticalNums"
                 :horizontalNums="horizontalNums"
                 :regionFillColor="regionFillColor"
+                :colorRandomSegment="colorRandomSegment"
             />
           </v-col>
         </v-row>
@@ -220,6 +231,7 @@ export default {
       regionFillColor: "#FFFFFF",
       lineColorMenu: false,
       regionFillColorMenu: false,
+      colorRandomSegment: 0,
     };
   },
   methods: {
@@ -236,7 +248,7 @@ export default {
       this.lineColor = this.getRandomColor();
     },
     setRandomLineWidth() {
-      this.lineWidth = Math.floor(Math.random() * (21 - 1) + 1);
+      this.lineWidth = this.getRandomInt(20);
     },
     setRandomFillColor() {
       this.regionFillColor = this.getRandomColor();
@@ -260,8 +272,10 @@ export default {
     },
     inflateHint(hint) {
       if (hint.length < this.patternLength) {
-        return hint.repeat(5);
+        let divisor = this.patternLength / hint.length
+        hint = hint.repeat(Math.ceil(divisor))
       }
+
       return hint;
     },
     generateNumsBasedOnHint(hint) {
