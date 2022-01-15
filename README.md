@@ -4,7 +4,7 @@ Recently I've seen a [video by Numberphile](https://www.youtube.com/watch?v=Jbfh
 
 I thought the patterns looked amazing and wrote a quick and dirty solution for generating (& coloring) them with Vue.js.
 
-The final app can be tested on GitHub pages:
+The final app can be tested on GitHub pages: https://secretlake.github.io/hitomezashi-patterns/
 
 Please note: this is a quick playground project, so no tests, optimizations, etc.
 
