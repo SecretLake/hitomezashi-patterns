@@ -1,8 +1,16 @@
 # Hitomezashi Patterns
 
+## Introduction
+
 Recently I've seen a [video by Numberphile](https://www.youtube.com/watch?v=JbfhzlMk2eY&t=262s) on how hitomezashi patterns: what they are and how to generate them.
 
 I thought the patterns looked amazing and wrote a quick and dirty solution for generating (& coloring) them with Vue.js.
+
+The final app can be tested on GitHub pages: https://secretlake.github.io/hitomezashi-patterns/
+
+Please note: this is a quick playground project, so no tests, optimizations, etc.
+
+## Generating a pattern
 
 You can generate a new pattern based on a random sequence of 1/0 by simply clicking on "Draw Pattern".
 
@@ -10,9 +18,9 @@ To generate a pattern based on a custom sequence / text -> add them to the respe
 
 You can either add a custom sequence of 1s and 0s, e.g. 10101010101, or a phrase, e.g. "May the force be with you".
 
-The final app can be tested on GitHub pages: https://secretlake.github.io/hitomezashi-patterns/
+## Coloring
 
-Please note: this is a quick playground project, so no tests, optimizations, etc.
+You can apply custom coloring to both - pattern segments and lines, irrespective of line width.
 
 ## Running locally
 
