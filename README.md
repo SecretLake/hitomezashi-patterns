@@ -1,24 +1,18 @@
-# hitomezashi-patterns
+# Hitomezashi Patterns
 
-## Project setup
-```
-npm install
-```
+Recently I've seen a [video by Numberphile](https://www.youtube.com/watch?v=JbfhzlMk2eY&t=262s) on how hitomezashi patterns: what they are and how to generate them.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+I thought the patterns looked amazing and wrote a quick and dirty solution for generating (& coloring) them with Vue.js.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+The final app can be tested on GitHub pages:
 
-### Lints and fixes files
-```
-npm run lint
-```
+Please note: this is a quick playground project, so no tests, optimizations, etc.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Running locally
+
+To run the app locally:
+- clone the repo
+- ```cd``` into the folder
+- run `````npm install`````
+- run ````npm run serve````
+- the app will be available in your browser on ````localhost:8080````
