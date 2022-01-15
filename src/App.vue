@@ -187,6 +187,8 @@ export default {
     HitomezashiPatterns
   },
   computed: {
+    // Idea for colorpicker implementation taken from:
+    // https://codepen.io/JamieCurnow/pen/KKPjraK
     lineColorStyle() {
       const {lineColor, lineColorMenu} = this;
 
